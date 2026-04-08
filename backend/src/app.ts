@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import { errorHandler } from "./shared/middlewares/errorHandler";
+import { userRoutes } from "./modules/user/routes/user.routes";
 
 const app = express();
 
@@ -16,6 +17,12 @@ import { AppError } from "./shared/errors/AppError";
 app.get("/error", (req, res) => {
   throw new AppError("Erro de teste", 400);
 });
+
+app.get("/users", (req, res) => {
+  return res.json({ message: "Use POST" });
+}); // TEMPORÁRIO
+
+app.use("/users", userRoutes);
 
 // middleware de erro SEMPRE no final
 app.use(errorHandler);
