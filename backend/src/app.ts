@@ -1,5 +1,6 @@
 import express from "express";
 import cors from "cors";
+import { errorHandler } from "./shared/middlewares/errorHandler";
 
 const app = express();
 
@@ -9,5 +10,14 @@ app.use(express.json());
 app.get("/health", (req, res) => {
   return res.status(200).json({ status: "ok" });
 });
+
+import { AppError } from "./shared/errors/AppError";
+
+app.get("/error", (req, res) => {
+  throw new AppError("Erro de teste", 400);
+});
+
+// middleware de erro SEMPRE no final
+app.use(errorHandler);
 
 export default app;
