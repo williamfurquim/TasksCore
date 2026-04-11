@@ -1,5 +1,6 @@
 import { UserRepository } from "../repositories/UserRepository";
 import { AppError } from "../../../shared/errors/AppError";
+import bcrypt from "bcrypt";
 
 export class CreateUserService {
   private userRepository = new UserRepository();
@@ -15,7 +16,13 @@ export class CreateUserService {
       throw new AppError("User already exists", 400);
     }
 
-    const user = await this.userRepository.create(data);
+    const hashedPassword = await bcrypt.hash(data.password, 10);
+
+    const user = await this.userRepository.create({
+      name: data.name,
+      email: data.email,
+      password: hashedPassword,
+    });
 
     return user;
   }
