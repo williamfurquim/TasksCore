@@ -1,23 +1,26 @@
 import { Request, Response } from "express";
 import { CreateUserService } from "../services/CreateUserService";
+import { createUserSchema } from "../dtos/createUser.schema";
 
 export class CreateUserController {
   async handle(req: Request, res: Response) {
-  const { name, email, password } = req.body;
+    const parsed = createUserSchema.safeParse(req.body);
 
-  const service = new CreateUserService();
+    if (!parsed.success) {
+      return res.status(400).json({
+        error: parsed.error.format(),
+      });
+    }
 
-  const user = await service.execute({
-    name,
-    email,
-    password,
-  });
+    const service = new CreateUserService();
 
-  return res.status(201).json({
-    id: user.id,
-    name: user.name,
-    email: user.email,
-    role: user.role
-  });
-}
+    const user = await service.execute(parsed.data);
+
+    return res.status(201).json({
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+    });
+  }
 }
