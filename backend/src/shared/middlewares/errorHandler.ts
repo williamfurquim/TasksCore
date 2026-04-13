@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { AppError } from "../errors/AppError";
 
 export function errorHandler(
-  err: Error,
+  err: unknown,
   req: Request,
   res: Response,
   next: NextFunction
@@ -13,7 +13,7 @@ export function errorHandler(
     });
   }
 
-  console.error(err);
+  console.error("UNEXPECTED ERROR:", err);
 
   return res.status(500).json({
     error: "Internal server error",

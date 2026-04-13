@@ -1,7 +1,9 @@
+import { sessionRoutes } from "./modules/session/routes/session.routes";
 import express from "express";
 import cors from "cors";
 import { errorHandler } from "./shared/middlewares/errorHandler";
 import { userRoutes } from "./modules/user/routes/user.routes";
+import { AppError } from "./shared/errors/AppError";
 
 const app = express();
 
@@ -12,8 +14,6 @@ app.get("/health", (req, res) => {
   return res.status(200).json({ status: "ok" });
 });
 
-import { AppError } from "./shared/errors/AppError";
-
 app.get("/error", (req, res) => {
   throw new AppError("Erro de teste", 400);
 });
@@ -23,6 +23,7 @@ app.get("/users", (req, res) => {
 }); // TEMPORÁRIO
 
 app.use("/users", userRoutes);
+app.use("/sessions", sessionRoutes);
 
 // middleware de erro SEMPRE no final
 app.use(errorHandler);
