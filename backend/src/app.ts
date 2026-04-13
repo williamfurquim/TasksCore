@@ -4,6 +4,7 @@ import cors from "cors";
 import { errorHandler } from "./shared/middlewares/errorHandler";
 import { userRoutes } from "./modules/user/routes/user.routes";
 import { AppError } from "./shared/errors/AppError";
+import { taskRoutes } from "./modules/task/routes/task.routes";
 
 const app = express();
 
@@ -13,6 +14,8 @@ app.use(express.json());
 app.get("/health", (req, res) => {
   return res.status(200).json({ status: "ok" });
 });
+
+app.use("/tasks", taskRoutes);
 
 app.get("/error", (req, res) => {
   throw new AppError("Erro de teste", 400);
