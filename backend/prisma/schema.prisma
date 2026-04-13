@@ -13,6 +13,7 @@ model User {
   email     String   @unique
   password  String
   role      Role     @default(USER)
+  tasks Task[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -20,4 +21,16 @@ model User {
 enum Role {
   USER
   ADMIN
+}
+
+model Task {
+  id        String   @id @default(uuid())
+  title     String
+  completed Boolean  @default(false)
+
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
