@@ -13,4 +13,11 @@ export class TaskRepository {
       orderBy: { createdAt: "desc" },
     });
   }
+
+  async update(id: string, data: { title?: string; completed?: boolean }) {
+  return prisma.task.update({
+    where: { id },
+    data,
+  });
+}
 }
