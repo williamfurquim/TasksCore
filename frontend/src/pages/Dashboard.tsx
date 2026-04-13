@@ -25,6 +25,11 @@ export function Dashboard() {
     loadTasks();
   }
 
+  async function deleteTask(id: string) {
+    await api.delete(`/tasks/${id}`);
+    loadTasks();
+  }
+
   async function toggleTask(id: string, completed: boolean) {
     await api.put(`/tasks/${id}`, {
       completed: !completed,
@@ -62,6 +67,8 @@ export function Dashboard() {
             >
               {task.title}
             </span>
+
+            <button onClick={() => deleteTask(task.id)}>🗑️</button>
           </li>
         ))}
       </ul>
